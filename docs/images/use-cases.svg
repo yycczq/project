@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="470" viewBox="0 0 1200 470" role="img" aria-labelledby="title desc">
+  <title id="title">对话接力适用场景</title>
+  <desc id="desc">不方便互加好友的临时交流、活动小组对接、熟人自愿牵线。</desc>
+  <rect width="1200" height="470" rx="28" fill="#f5f8f5"/>
+  <text x="52" y="64" fill="#16845e" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="16" font-weight="700" letter-spacing="2">WHEN IT HELPS · 适合的场景</text>
+  <text x="52" y="108" fill="#18231f" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="28" font-weight="700">需要把事说清楚，但不一定要互加好友</text>
+
+  <g transform="translate(52 145)">
+    <rect width="348" height="248" rx="22" fill="#fff" stroke="#e1e9e2" stroke-width="2"/>
+    <circle cx="48" cy="52" r="25" fill="#e8f5ed"/><path d="M37 48h17a7 7 0 0 1 0 14H43m14-11H40a7 7 0 0 0 0-14h11" fill="none" stroke="#16845e" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="88" y="47" fill="#18231f" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="20" font-weight="700">临时对接</text>
+    <text x="28" y="112" fill="#48564e" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="16">A 和 C 要确认一件具体事情，</text>
+    <text x="28" y="141" fill="#48564e" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="16">但不方便互加微信好友。</text>
+    <rect x="28" y="176" width="292" height="43" rx="12" fill="#f1f6f2"/>
+    <text x="48" y="203" fill="#426553" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="14">各自进小程序，文字 / 图片双向接力</text>
+  </g>
+
+  <g transform="translate(426 145)">
+    <rect width="348" height="248" rx="22" fill="#fff" stroke="#e1e9e2" stroke-width="2"/>
+    <circle cx="48" cy="52" r="25" fill="#e8f5ed"/><path d="M35 58h26M38 55V42l10-7 10 7v13m-13 3v-9h6v9" fill="none" stroke="#16845e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="88" y="47" fill="#18231f" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="20" font-weight="700">活动 / 小组协作</text>
+    <text x="28" y="112" fill="#48564e" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="16">组织者帮参与者确认集合点、</text>
+    <text x="28" y="141" fill="#48564e" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="16">时间、路线或临时安排。</text>
+    <rect x="28" y="176" width="292" height="43" rx="12" fill="#f1f6f2"/>
+    <text x="48" y="203" fill="#426553" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="14">事项结束后，转接人可暂停通道</text>
+  </g>
+
+  <g transform="translate(800 145)">
+    <rect width="348" height="248" rx="22" fill="#fff" stroke="#e1e9e2" stroke-width="2"/>
+    <circle cx="48" cy="52" r="25" fill="#e8f5ed"/><circle cx="41" cy="46" r="6" fill="none" stroke="#16845e" stroke-width="2.5"/><circle cx="56" cy="46" r="6" fill="none" stroke="#16845e" stroke-width="2.5"/><path d="M30 64c1-7 6-10 11-10m8 0c6 0 10 3 11 10" fill="none" stroke="#16845e" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="88" y="47" fill="#18231f" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="20" font-weight="700">熟人自愿牵线</text>
+    <text x="28" y="112" fill="#48564e" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="16">介绍人先征得双方同意，再建立</text>
+    <text x="28" y="141" fill="#48564e" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="16">一个可随时停止的沟通入口。</text>
+    <rect x="28" y="176" width="292" height="43" rx="12" fill="#f1f6f2"/>
+    <text x="48" y="203" fill="#426553" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="14">双方都加入并知情，不是匿名通道</text>
+  </g>
+  <text x="600" y="438" text-anchor="middle" fill="#758078" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="14">它只转接参与者主动发在小程序会话里的内容，不读取微信聊天记录。</text>
+</svg>

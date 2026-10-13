@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430" role="img" aria-labelledby="title desc">
+  <title id="title">对话接力如何工作</title>
+  <desc id="desc">发送方和接收方分别加入小程序通道，转接人负责邀请与开关，双方的消息双向接力。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 9 4.5 0 9Z" fill="#78a995"/></marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7faf7"/><stop offset="1" stop-color="#eaf4ee"/></linearGradient>
+  </defs>
+  <rect width="1200" height="430" rx="28" fill="url(#bg)"/>
+  <text x="54" y="62" fill="#16845e" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="16" font-weight="700" letter-spacing="2">RELAY FLOW · 对话接力</text>
+  <text x="54" y="106" fill="#18231f" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="28" font-weight="700">三方知情加入，消息在小程序内双向传递</text>
+
+  <rect x="52" y="145" width="300" height="190" rx="22" fill="#fff" stroke="#e0e9e2" stroke-width="2"/>
+  <circle cx="98" cy="197" r="25" fill="#e8f5ed"/><text x="98" y="205" text-anchor="middle" fill="#16845e" font-family="Arial,sans-serif" font-size="18" font-weight="700">A</text>
+  <text x="138" y="194" fill="#18231f" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="20" font-weight="700">发送方</text>
+  <text x="78" y="244" fill="#68756e" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="15">打开小程序，主动发送文字 / 图片</text>
+  <rect x="78" y="268" width="148" height="38" rx="12" fill="#f1f6f2"/><text x="96" y="293" fill="#426553" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="14">“路线图发你了”</text>
+
+  <rect x="450" y="145" width="300" height="190" rx="22" fill="#16845e"/>
+  <circle cx="496" cy="197" r="25" fill="#ffffff30"/><path d="M486 197h20m-10-10v20" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  <text x="536" y="194" fill="#fff" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="20" font-weight="700">转接人</text>
+  <text x="478" y="244" fill="#e1f3e8" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="15">分别邀请双方，管理通道开关</text>
+  <rect x="478" y="268" width="244" height="38" rx="12" fill="#ffffff20"/><text x="500" y="293" fill="#fff" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="14">只管规则，不查看会话正文</text>
+
+  <rect x="848" y="145" width="300" height="190" rx="22" fill="#fff" stroke="#e0e9e2" stroke-width="2"/>
+  <circle cx="894" cy="197" r="25" fill="#e8f5ed"/><text x="894" y="205" text-anchor="middle" fill="#16845e" font-family="Arial,sans-serif" font-size="18" font-weight="700">C</text>
+  <text x="934" y="194" fill="#18231f" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="20" font-weight="700">接收方</text>
+  <text x="874" y="244" fill="#68756e" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="15">收到消息，也可在通道内回复</text>
+  <rect x="874" y="268" width="192" height="38" rx="12" fill="#f1f6f2"/><text x="892" y="293" fill="#426553" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="14">“收到，周六见”</text>
+
+  <path d="M359 218h77" fill="none" stroke="#78a995" stroke-width="3" marker-end="url(#arrow)"/><path d="M443 238h-77" fill="none" stroke="#b6cbbf" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M757 218h77" fill="none" stroke="#78a995" stroke-width="3" marker-end="url(#arrow)"/><path d="M841 238h-77" fill="none" stroke="#b6cbbf" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="600" y="383" text-anchor="middle" fill="#68756e" font-family="-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif" font-size="15">双方使用各自的一次性口令加入；同意后由转接人开启。演示图，不代表线上服务状态。</text>
+</svg>
