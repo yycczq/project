@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f5f7f4">
+  <title>接力 · 双向消息转接原型</title>
+  <style>
+    :root{color-scheme:light;--ink:#18231f;--muted:#78827d;--line:#e7ebe7;--green:#16845e;--green-dark:#116d4d;--mint:#e8f5ed;--canvas:#f5f7f4;--white:#fff;--shadow:0 24px 80px #1b382912,0 2px 8px #1b38290a}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 18% 10%,#e9f3eb 0,transparent 36%),var(--canvas);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Noto Sans CJK SC",sans-serif;color:var(--ink);min-height:100vh}
+    button,input{font:inherit}button{cursor:pointer}.layout{width:min(1080px,100%);min-height:100vh;margin:auto;padding:36px 30px;display:grid;grid-template-columns:1fr 404px;gap:64px;align-items:center}
+    .intro{padding:10px 0 30px}.brand{display:flex;align-items:center;gap:11px;font-size:16px;font-weight:700;letter-spacing:.02em}.brand-mark{width:38px;height:38px;border-radius:13px;background:var(--green);display:grid;place-items:center;color:white;box-shadow:0 7px 16px #16845e35}.brand-mark svg{width:22px}.eyebrow{margin:54px 0 14px;color:var(--green);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}.intro h1{max-width:510px;margin:0;font-size:42px;line-height:1.18;letter-spacing:-.045em;font-weight:720}.intro h1 span{color:var(--green)}.lead{max-width:465px;color:#65716b;font-size:15px;line-height:1.8;margin:20px 0 32px}.flow{display:flex;align-items:stretch;gap:9px;max-width:505px}.person{flex:1;min-width:0;padding:13px 11px;border:1px solid var(--line);border-radius:14px;background:#ffffffbb}.person small{display:block;font-size:10px;color:var(--muted);margin-bottom:7px}.person strong{font-size:13px;white-space:nowrap}.person .person-state{display:block;color:var(--green);font-size:10px;margin-top:6px}.arrow{align-self:center;color:#91a39a;font-size:16px}.flow-caption{margin-top:12px;color:var(--muted);font-size:11px}.control-card{margin-top:28px;max-width:505px;padding:17px 18px;border-radius:16px;background:#fff;border:1px solid var(--line);box-shadow:0 6px 20px #1b382908}.control-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}.control-head strong{font-size:13px}.demo-tag{font-size:10px;color:#88632d;background:#faf2dc;padding:5px 8px;border-radius:20px}.control-card p{margin:0;color:#707b75;font-size:12px;line-height:1.7}.demo-reply{margin-top:13px;border:0;background:var(--mint);color:var(--green-dark);font-size:12px;font-weight:650;padding:9px 12px;border-radius:10px}.demo-reply:hover{background:#d9efdf}.security-row{display:flex;gap:9px;margin-top:19px;color:#69756e;font-size:11px;line-height:1.65;max-width:505px}.security-row svg{flex:none;margin-top:1px;color:var(--green)}
+    .phone{height:min(844px,calc(100vh - 48px));min-height:680px;border-radius:32px;background:#fff;box-shadow:var(--shadow);border:1px solid #e4e9e4;overflow:hidden;display:flex;flex-direction:column;position:relative}.statusbar{height:39px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:11px;font-weight:700;background:#fff}.status-icons{display:flex;gap:5px;align-items:center}.status-icons svg{height:13px;width:auto}.navbar{height:54px;display:grid;grid-template-columns:48px 1fr 48px;align-items:center;border-bottom:1px solid #f0f2f0;padding:0 10px;flex:none}.back,.more{width:38px;height:38px;border:0;background:none;display:grid;place-items:center;color:#28342e}.navbar-title{text-align:center}.navbar-title strong{display:block;font-size:15px}.navbar-title small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.more{font-size:20px;letter-spacing:1px}.chat-scroll{flex:1;min-height:0;overflow-y:auto;padding:15px 15px 10px;background:#f5f7f5;scrollbar-width:thin;scrollbar-color:#d9e0da transparent}.route-card{background:white;border:1px solid #e6ece6;border-radius:14px;padding:12px 13px;margin:1px 0 12px;box-shadow:0 2px 7px #20382a07}.route-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}.route-label{font-size:10px;color:#69756e}.live{font-size:9px;color:var(--green);background:#e8f6ed;padding:4px 7px;border-radius:20px;display:flex;align-items:center;gap:4px}.live:before{content:"";width:5px;height:5px;background:#1eae70;border-radius:50%}.route-line{display:flex;align-items:center;gap:7px}.route-node{font-size:11px;font-weight:650;white-space:nowrap}.route-arrow{color:#91a39a;font-size:12px}.route-foot{display:flex;align-items:center;gap:5px;border-top:1px solid #f0f3f0;margin-top:10px;padding-top:8px;color:#79857e;font-size:9px}.route-foot svg{color:var(--green)}.date-chip{width:max-content;margin:12px auto 15px;border-radius:20px;padding:5px 9px;background:#e9ede9;color:#818a84;font-size:9px}.message{display:flex;gap:8px;align-items:flex-start;margin:13px 0}.message.outgoing{flex-direction:row-reverse}.avatar{width:29px;height:29px;flex:none;border-radius:10px;background:#dfe9e1;display:grid;place-items:center;color:#3f6953;font-size:10px;font-weight:700}.outgoing .avatar{background:#d9eee2;color:#1b7753}.message-body{max-width:76%;min-width:0}.sender{font-size:9px;color:#8a938d;margin:0 0 5px 2px}.outgoing .sender{text-align:right;margin-right:2px}.bubble{font-size:12px;line-height:1.6;padding:9px 11px;background:#fff;border:1px solid #edf0ed;border-radius:4px 13px 13px 13px;overflow-wrap:anywhere}.outgoing .bubble{background:#dff2e6;border-color:#d8eddf;border-radius:13px 4px 13px 13px}.bubble img{display:block;max-width:100%;width:205px;max-height:190px;object-fit:cover;border-radius:8px;margin:0 0 6px}.bubble .image-caption{font-size:11px}.delivery{text-align:right;font-size:9px;color:#8a968f;margin-top:4px}.incoming .delivery{text-align:left;margin-left:2px}.relay-note{display:flex;align-items:center;gap:4px;color:#799085;font-size:9px;margin-top:4px}.incoming .relay-note{margin-left:2px}.divider-label{display:flex;align-items:center;gap:8px;margin:17px 0 10px;color:#98a29c;font-size:9px}.divider-label:before,.divider-label:after{content:"";height:1px;background:#e3e9e3;flex:1}.composer{background:white;border-top:1px solid #eaeeea;padding:10px 12px calc(12px + env(safe-area-inset-bottom));flex:none}.compliance{display:flex;gap:6px;align-items:center;font-size:9px;color:#86918a;margin:0 0 8px 2px}.compliance svg{color:var(--green);flex:none}.compose-row{display:flex;gap:7px;align-items:center}.attach{height:39px;width:39px;flex:none;border:1px solid #e4eae4;border-radius:12px;background:#fff;color:#66766d;display:grid;place-items:center}.attach:hover{background:#f6faf6}.compose-input{height:39px;min-width:0;flex:1;border:1px solid #e4eae4;border-radius:12px;padding:0 11px;outline:none;font-size:11px;color:var(--ink)}.compose-input:focus{border-color:#93c8aa}.compose-input::placeholder{color:#a3aca6}.send{height:39px;padding:0 13px;border:0;border-radius:12px;background:var(--green);color:white;font-size:11px;font-weight:700}.send:disabled{opacity:.45;cursor:default}.compose-hint{font-size:9px;color:#a0aaa3;text-align:center;margin:7px 0 0}.toast{position:absolute;left:50%;bottom:95px;transform:translate(-50%,12px);background:#24342b;color:#fff;padding:9px 12px;border-radius:11px;font-size:10px;opacity:0;pointer-events:none;transition:.2s;white-space:nowrap;box-shadow:0 5px 16px #0002}.toast.show{opacity:1;transform:translate(-50%,0)}.close-channel{width:100%;margin-top:9px;padding:8px;border:1px solid #f0dedd;background:white;color:#a95951;border-radius:10px;font-size:11px}.phone-footer{display:none}
+    @media(max-width:850px){.layout{grid-template-columns:1fr;justify-items:center;padding:18px 12px 28px;gap:18px}.intro{width:min(404px,100%);padding:3px 7px}.eyebrow{margin:21px 0 9px;font-size:10px}.intro h1{font-size:29px}.lead{font-size:13px;margin:10px 0 15px;line-height:1.6}.flow{gap:6px}.person{padding:10px 7px}.person strong{font-size:11px}.control-card{margin-top:14px;padding:12px 13px}.security-row{margin-top:10px}.phone{width:min(404px,100%);height:780px;min-height:640px;border-radius:27px}.statusbar{height:31px}.phone-footer{display:block;text-align:center;font-size:9px;color:#9ba59e;margin:10px 0 0}}
+    @media(max-width:390px){.layout{padding-left:0;padding-right:0}.phone{border-radius:0;border-left:0;border-right:0}.intro{padding-left:14px;padding-right:14px}.route-line{gap:5px}.route-node{font-size:10px}}
+    [hidden]{display:none!important}.brand-mark{overflow:hidden}.brand-mark img{width:100%;height:100%;display:block;object-fit:cover}.role-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:12px 0 9px;padding:4px;border-radius:12px;background:#f3f6f3}.role-tab{border:0;border-radius:9px;background:transparent;padding:8px 4px;color:#748078;font-size:11px;font-weight:650}.role-tab.active{background:#fff;color:var(--green-dark);box-shadow:0 1px 5px #1b382911}.role-note{margin:0 0 8px!important}.owner-notice{margin:14px 0;padding:17px 15px;border:1px solid #e6ece6;border-radius:14px;background:#fff;color:#66736b;font-size:12px;line-height:1.75}.owner-notice strong{display:block;color:#25332b;font-size:13px;margin-bottom:5px}
+  </style>
+</head>
+<body>
+  <main class="layout">
+    <section class="intro" aria-label="转接原型说明">
+      <div class="brand"><span class="brand-mark"><img src="miniprogram/images/mini-program-avatar.svg" alt=""></span>接力 <span style="font-weight:450;color:#7a857f">· 消息转接</span></div>
+      <div class="eyebrow">轻量原型 · 双向消息接力</div>
+      <h1>让消息到达<br><span>该去的那个人</span></h1>
+      <p class="lead">在网页里切换发起人、转接人、接收人，体验文字和图片如何双向接力。三种身份都在本机模拟，不会连接云端。</p>
+      <div class="flow" aria-label="消息转接路径">
+        <div class="person"><small>发起人</small><strong>你</strong><span class="person-state">已加入</span></div><span class="arrow">→</span>
+        <div class="person"><small>转接人</small><strong>小林</strong><span class="person-state">规则已开启</span></div><span class="arrow">→</span>
+        <div class="person"><small>接收人</small><strong>阿哲</strong><span class="person-state">已同意</span></div>
+      </div>
+      <div class="flow-caption">阿哲回复后：阿哲 → 小林 → 你</div>
+      <div class="control-card">
+        <div class="control-head"><strong>选择测试身份</strong><span class="demo-tag">本地模拟</span></div>
+        <div class="role-tabs" id="roleTabs" role="group" aria-label="选择测试身份"><button class="role-tab active" data-role="a" aria-pressed="true">发起人</button><button class="role-tab" data-role="b" aria-pressed="false">转接人</button><button class="role-tab" data-role="c" aria-pressed="false">接收人</button></div>
+        <p class="role-note" id="roleNote">发起人可以发文字或图片，消息会模拟经小林转给阿哲。</p>
+        <button class="demo-reply" id="replyDemo">模拟阿哲回复 ↩</button>
+        <button class="close-channel" id="closeChannel" hidden>暂停这条转接</button>
+      </div>
+      <div class="security-row"><svg width="15" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M5 7V5a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span>网页测试版只在当前浏览器内模拟，不连接微信或 CloudBase，图片和消息不会上传，也不会保存。它用来先体验界面与三种角色的转接流程。</span></div>
+    </section>
+
+    <section class="phone" aria-label="接力小程序界面">
+      <div class="statusbar"><span>9:41</span><span class="status-icons"><svg viewBox="0 0 18 13" fill="none"><path d="M1 4.2a11.4 11.4 0 0 1 16 0M3.8 7a7.4 7.4 0 0 1 10.4 0M6.7 9.8a3.3 3.3 0 0 1 4.6 0" stroke="#23322b" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="11.6" r=".8" fill="#23322b"/></svg><svg viewBox="0 0 16 13" fill="none"><rect x=".8" y="2" width="12.2" height="9" rx="2" stroke="#23322b" stroke-width="1.3"/><path d="M14 4.8v3.4" stroke="#23322b" stroke-width="1.5" stroke-linecap="round"/><rect x="2.6" y="3.8" width="8" height="5.4" rx="1" fill="#23322b"/></svg></span></div>
+      <header class="navbar"><button class="back" aria-label="返回"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="m12.5 4.5-5.5 5.5 5.5 5.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="navbar-title"><strong id="navTitle">你 · 转接会话</strong><small id="navStatus">消息经小林转给阿哲</small></div><button class="more" aria-label="更多选项">···</button></header>
+      <div class="chat-scroll" id="chatScroll">
+        <div class="route-card"><div class="route-top"><span class="route-label">当前转接路径</span><span class="live" id="liveBadge">转接中</span></div><div class="route-line"><span class="route-node" id="pathFrom">你</span><span class="route-arrow">→</span><span class="route-node">小林</span><span class="route-arrow">→</span><span class="route-node" id="pathTo">阿哲</span></div><div class="route-foot"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1.8 13 4v3.7c0 3-2.1 5.3-5 6.5-2.9-1.2-5-3.5-5-6.5V4l5-2.2Z" stroke="currentColor" stroke-width="1.3"/><path d="m5.7 7.9 1.5 1.5 3.2-3.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="routeFootText">三方已确认 · 文字和图片 · 本机模拟</span></div></div>
+        <div class="date-chip" id="dateChip">本机演示对话</div>
+      <div class="owner-notice" id="ownerNotice" hidden><strong>转接人管理视角</strong><span>这里仅演示通道开关。前端隐藏消息不代表真实权限隔离；上线时需要由服务端控制谁能读取消息。</span></div>
+        <div id="messages">
+          <article class="message outgoing" data-sender-role="a"><div class="avatar">我</div><div class="message-body"><div class="sender">你 · 发给对方</div><div class="bubble">周六徒步还按原计划吗？我看天气好像不错。</div><div class="delivery">已转接 · 刚刚</div></div></article>
+          <article class="message incoming" data-sender-role="c"><div class="avatar">哲</div><div class="message-body"><div class="sender">阿哲 · 经小林转接</div><div class="bubble">按原计划！早上八点地铁口见，我把路线也整理好了。</div><div class="relay-note"><span>↶</span> 经小林转接 · 刚刚</div></div></article>
+          <article class="message incoming" data-sender-role="c"><div class="avatar">哲</div><div class="message-body"><div class="sender">阿哲 · 经小林转接</div><div class="bubble"><img alt="徒步路线示意图" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='270' viewBox='0 0 420 270'%3E%3Crect width='420' height='270' rx='18' fill='%23e7f0e6'/%3E%3Cpath d='M0 45 95 25l75 29 86-23 75 31 89-14v70l-94 17-76-28-82 23-78-31L0 119Z' fill='%23d1e4ce'/%3E%3Cpath d='M0 184 85 161l68 21 82-27 72 27 113-21v109H0Z' fill='%23dce8d7'/%3E%3Cpath d='M-5 210c54-35 76-72 126-69 49 3 56 34 101 17 45-17 53-74 101-73 33 1 52 26 103 6' fill='none' stroke='%23fdfbf3' stroke-width='15' stroke-linecap='round'/%3E%3Cpath d='M-5 210c54-35 76-72 126-69 49 3 56 34 101 17 45-17 53-74 101-73 33 1 52 26 103 6' fill='none' stroke='%23c49c5a' stroke-width='3' stroke-dasharray='7 7' stroke-linecap='round'/%3E%3Ccircle cx='121' cy='141' r='10' fill='%2316845e' stroke='white' stroke-width='4'/%3E%3Cpath d='M313 68c0-13 10-23 23-23s23 10 23 23c0 17-23 39-23 39S313 85 313 68Z' fill='%23e7795d'/%3E%3Ccircle cx='336' cy='68' r='7' fill='white'/%3E%3Ctext x='24' y='38' font-family='Arial,sans-serif' font-size='16' font-weight='700' fill='%233f624c'%3E%E7%99%BD%E4%BA%91%E5%B1%B1%E5%BE%92%E6%AD%A5%E7%BA%BF%E8%B7%AF%3C/text%3E%3Ctext x='87' y='166' font-family='Arial,sans-serif' font-size='12' fill='%233f624c'%3E%E5%85%A5%E5%8F%A3%3C/text%3E%3Ctext x='341' y='126' font-family='Arial,sans-serif' font-size='12' fill='%233f624c'%3E%E5%B1%B1%E9%A1%B6%3C/text%3E%3C/svg%3E"><span class="image-caption">我把路线图也发你，山顶可以看日出。</span></div><div class="relay-note"><span>↶</span> 经小林转接 · 刚刚</div></div></article>
+        </div>
+      </div>
+      <footer class="composer" id="chatComposer"><div class="compliance"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1.8 13 4v3.7c0 3-2.1 5.3-5 6.5-2.9-1.2-5-3.5-5-6.5V4l5-2.2Z" stroke="currentColor" stroke-width="1.3"/><path d="m5.7 7.9 1.5 1.5 3.2-3.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="composeRoute">你的消息会经小林转给阿哲</span></div><div class="compose-row"><input id="imageInput" type="file" accept="image/*" hidden><button class="attach" id="attachImage" aria-label="添加图片" title="添加图片"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="2.2" y="3" width="15.6" height="14" rx="3" stroke="currentColor" stroke-width="1.4"/><circle cx="7" cy="7.7" r="1.5" stroke="currentColor" stroke-width="1.3"/><path d="m3 14 4.3-4 3.3 3 2.1-1.8L17 15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><input class="compose-input" id="messageInput" maxlength="500" placeholder="发文字给对方…"><button class="send" id="sendButton" disabled>发送</button></div><div class="compose-hint">最多 500 字 · 支持常见图片格式 · 原型仅本机预览</div></footer>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+  <script>
+    (()=>{
+      const messages=document.getElementById('messages');
+      const scroller=document.getElementById('chatScroll');
+      const input=document.getElementById('messageInput');
+      const send=document.getElementById('sendButton');
+      const imageInput=document.getElementById('imageInput');
+      const toast=document.getElementById('toast');
+      const liveBadge=document.getElementById('liveBadge');
+      const navStatus=document.getElementById('navStatus');
+      const roleButtons=[...document.querySelectorAll('.role-tab')];
+      const routeFrom=document.getElementById('pathFrom');
+      const routeTo=document.getElementById('pathTo');
+      const navTitle=document.getElementById('navTitle');
+      const roleNote=document.getElementById('roleNote');
+      const replyDemo=document.getElementById('replyDemo');
+      const closeChannel=document.getElementById('closeChannel');
+      const ownerNotice=document.getElementById('ownerNotice');
+      const dateChip=document.getElementById('dateChip');
+      const chatComposer=document.getElementById('chatComposer');
+      const attachImage=document.getElementById('attachImage');
+      let active=true, latestText='', currentRole='a';
+
+      const roleName=(role)=>role==='a'?'你':'阿哲';
+      const showToast=(text)=>{toast.textContent=text;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2200)};
+      const renderMessages=()=>{
+        messages.querySelectorAll('.message').forEach((article)=>{
+          const senderRole=article.dataset.senderRole;
+          const outgoing=senderRole===currentRole;
+          const senderName=roleName(senderRole);
+          article.classList.toggle('outgoing',outgoing);
+          article.classList.toggle('incoming',!outgoing);
+          article.querySelector('.avatar').textContent=outgoing?'我':(senderRole==='c'?'哲':'你');
+          article.querySelector('.sender').textContent=outgoing?'你 · 发给对方':`${senderName} · 经小林转接`;
+          const note=article.querySelector('.delivery,.relay-note');
+          note.className=outgoing?'delivery':'relay-note';
+          note.textContent=outgoing?'已模拟转接 · 刚刚':'↶ 经小林转接 · 刚刚';
+        });
+      };
+      const renderRole=()=>{
+        const manager=currentRole==='b';
+        const person=currentRole==='a'?'你':'阿哲';
+        const other=currentRole==='a'?'阿哲':'你';
+        roleButtons.forEach((button)=>{
+          const selected=button.dataset.role===currentRole;
+          button.classList.toggle('active',selected);
+          button.setAttribute('aria-pressed',String(selected));
+        });
+        document.getElementById('messages').hidden=manager;
+        dateChip.hidden=manager;
+        chatComposer.hidden=manager;
+        ownerNotice.hidden=!manager;
+        replyDemo.hidden=manager;
+        closeChannel.hidden=!manager;
+        navTitle.textContent=manager?'转接规则管理':`${person} · 转接会话`;
+        navStatus.textContent=manager?'管理通道开关，不显示消息内容':(active?`消息经小林转给${other}`:'转接已暂停');
+        routeFrom.textContent=currentRole==='c'?'阿哲':'你';
+        routeTo.textContent=currentRole==='c'?'你':'阿哲';
+        liveBadge.textContent=active?'转接中':'已暂停';
+        liveBadge.style.color=active?'':'#8b7771';
+        liveBadge.style.background=active?'':'#f1ece9';
+        document.getElementById('routeFootText').textContent=`本机演示 · ${active?'通道开启':'通道暂停'} · 不代表线上状态`;
+        roleNote.textContent=manager?'转接人可以暂停或重新开启通道；此演示不实现真实的账号权限。':currentRole==='a'?'发起人可以发文字或图片，消息会模拟经小林转给阿哲。':'接收人可以查看转来的文字和图片，也可以模拟回复给发起人。';
+        replyDemo.textContent=currentRole==='a'?'模拟阿哲回复 ↩':'模拟发起人回复 ↩';
+        document.getElementById('composeRoute').textContent=`你的消息会经小林转给${other}`;
+        input.placeholder=`发文字给${other}…`;
+        input.disabled=!active;
+        send.disabled=!active||!input.value.trim();
+        attachImage.disabled=!active;
+        attachImage.style.opacity=active?'1':'.45';
+        closeChannel.textContent=active?'暂停这条转接':'重新开启转接';
+        renderMessages();
+      };
+      const addMessage=({senderRole,text='',imageUrl='',caption=''})=>{
+        const article=document.createElement('article');
+        article.className='message';
+        article.dataset.senderRole=senderRole;
+        const avatar=document.createElement('div');avatar.className='avatar';
+        const body=document.createElement('div');body.className='message-body';
+        const sender=document.createElement('div');sender.className='sender';
+        const bubble=document.createElement('div');bubble.className='bubble';
+        if(imageUrl){const img=document.createElement('img');img.alt='待转接图片';img.src=imageUrl;bubble.appendChild(img)}
+        if(text){const copy=document.createElement('span');copy.textContent=text;bubble.appendChild(copy)}
+        if(caption){const cap=document.createElement('span');cap.className='image-caption';cap.textContent=caption;bubble.appendChild(cap)}
+        const note=document.createElement('div');note.className='delivery';
+        body.append(sender,bubble,note);article.append(avatar,body);messages.appendChild(article);
+        renderMessages();scroller.scrollTop=scroller.scrollHeight;
+      };
+      const sendText=()=>{
+        const text=input.value.trim();
+        if(!text||!active||currentRole==='b')return;
+        latestText=text;addMessage({senderRole:currentRole,text});input.value='';renderRole();
+        showToast(`文字已模拟经小林转给${currentRole==='a'?'阿哲':'你'}`);
+      };
+      roleButtons.forEach((button)=>button.addEventListener('click',()=>{currentRole=button.dataset.role;renderRole()}));
+      input.addEventListener('input',()=>send.disabled=!input.value.trim()||!active);
+      input.addEventListener('keydown',(event)=>{if(event.key==='Enter'){event.preventDefault();sendText()}});
+      send.addEventListener('click',sendText);
+      attachImage.addEventListener('click',()=>{if(active)imageInput.click();else showToast('转接已暂停')});
+      imageInput.addEventListener('change',()=>{
+        const file=imageInput.files&&imageInput.files[0];if(!file)return;
+        if(!file.type.startsWith('image/')){showToast('请选择图片文件');imageInput.value='';return}
+        if(file.size>10*1024*1024){showToast('演示图片需小于 10 MB');imageInput.value='';return}
+        const localUrl=URL.createObjectURL(file);
+        addMessage({senderRole:currentRole,imageUrl:localUrl,caption:file.name});
+        showToast(`图片已模拟经小林转给${currentRole==='a'?'阿哲':'你'}`);imageInput.value='';
+      });
+      replyDemo.addEventListener('click',()=>{
+        if(!active){showToast('请先重新开启转接');return}
+        const senderRole=currentRole==='a'?'c':'a';
+        const answer=latestText?'收到，我看到了，稍后回复你。':'图片收到啦，路线看起来不错！周六见。';
+        addMessage({senderRole,text:answer});showToast(`${roleName(senderRole)}的回复已模拟经小林转回`);
+      });
+      closeChannel.addEventListener('click',()=>{
+        active=!active;renderRole();showToast(active?'转接通道已重新开启':'转接已暂停');
+      });
+      renderRole();
+    })();
+  </script>
+</body>
+</html>

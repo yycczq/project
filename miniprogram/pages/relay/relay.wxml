@@ -1,0 +1,45 @@
+<view class="page">
+  <view class="route-card">
+    <view class="route-head"><text class="route-label">当前转接路径</text><text class="state {{active ? 'on' : 'off'}}">{{active ? '转接中' : '已暂停'}}</text></view>
+    <view class="route-line"><text>发送方</text><text class="arrow">→</text><text>转接人</text><text class="arrow">→</text><text>接收方</text></view>
+    <view class="route-meta">{{active ? '三方已确认' : '等待三方确认或转接人恢复'}} · 文字和图片 · 最长保留 31 天</view>
+  </view>
+
+  <view class="demo-row" wx:if="{{!cloudMode}}">
+    <text class="demo-copy">回复会经转接人转回</text>
+    <button class="demo-button" bindtap="simulateReply">模拟对方回复 ↩</button>
+  </view>
+
+  <scroll-view class="chat" scroll-y scroll-into-view="{{scrollIntoView}}" scroll-with-animation>
+    <view wx:if="{{!cloudMode}}" class="date">本机演示对话</view>
+    <view wx:if="{{messages.length === 0}}" class="empty-state">
+      <view class="empty-mark">↗</view>
+      <text class="empty-title">会话已就绪</text>
+      <text class="empty-copy">发送文字或图片，内容会经转接人转给对方。</text>
+    </view>
+    <view wx:for="{{messages}}" wx:key="id" id="{{item.id}}" class="message {{item.mine ? 'mine' : 'theirs'}}">
+      <view class="avatar">{{item.mine ? '我' : '对'}}</view>
+      <view class="message-content">
+        <text class="sender">{{item.sender}}</text>
+        <view class="bubble">
+          <image wx:if="{{item.imagePath}}" class="photo" src="{{item.imagePath}}" mode="widthFix" show-menu-by-longpress bindtap="previewImage" data-src="{{item.imagePath}}" />
+          <text wx:if="{{item.text}}" class="message-text">{{item.text}}</text>
+        </view>
+        <text wx:if="{{item.delivery}}" class="delivery">{{item.delivery}}</text>
+        <text wx:if="{{item.relay}}" class="relay-note">↶ {{item.relay}}</text>
+        <text wx:if="{{item.timeLabel}}" class="relay-note">{{item.timeLabel}}</text>
+      </view>
+    </view>
+    <view class="safety-note">{{cloudMode ? '🔒 云端会话，仅发送方和接收方可读取' : '🔒 这只是本机演示，不会上传消息或图片'}}</view>
+  </scroll-view>
+
+  <view class="composer">
+    <text class="route-hint">{{routeHint}}</text>
+    <view class="compose-row">
+      <button class="image-button" bindtap="chooseImage" disabled="{{!active || uploadingImage || sending}}" aria-label="选择图片">{{uploadingImage ? '…' : '＋'}}</button>
+      <input class="input" value="{{inputText}}" placeholder="发消息给对方…" maxlength="500" confirm-type="send" bindinput="onInput" bindconfirm="sendText" disabled="{{!active || sending || uploadingImage}}" />
+      <button class="send-button" bindtap="sendText" disabled="{{!active || !inputText || sending || uploadingImage}}">{{sending ? '发送中' : '发送'}}</button>
+    </view>
+    <view class="bottom-row"><text>{{cloudMode ? '服务端会话 · 31 天后自动清理' : '支持文字和图片 · 原型仅本机预览'}}</text><button wx:if="{{!cloudMode}}" class="pause" bindtap="toggleRelay">{{active ? '暂停转接' : '重新开启'}}</button></view>
+  </view>
+</view>

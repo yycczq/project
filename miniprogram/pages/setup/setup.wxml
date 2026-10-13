@@ -1,0 +1,52 @@
+<view class="page">
+  <view class="hero">
+    <view class="brand"><view class="mark">↗</view><text>接力 · 双向消息转接</text></view>
+    <text class="title">把你们的对话，<text class="accent">安全接起来</text></text>
+    <text class="subtitle">转接人创建规则，再邀请发送方和接收方加入。小程序中的文字与图片会按确认过的路径双向转发；不会读取微信聊天窗口里的消息。</text>
+  </view>
+
+  <view class="status-card {{cloudReady ? 'ready' : 'local'}}">
+    <view class="status-dot"></view>
+    <view><text class="status-title">{{cloudReady ? 'CloudBase 环境已配置' : '本地演示模式'}}</text><text class="status-copy">{{cloudReady ? '创建或加入时会连接云函数' : '需要先配置 CloudBase 环境才能创建真实通道'}}</text></view>
+  </view>
+
+  <view class="card">
+    <view class="section-title"><text class="step">01</text><text>我是转接人 · 创建转接</text></view>
+    <view class="route"><text>发送方</text><text class="arrow">↔</text><text>转接人</text><text class="arrow">↔</text><text>接收方</text></view>
+    <view class="note">创建后会生成两条 24 小时有效、各限一人使用的邀请口令。发送方、接收方加入并确认后，转接才会开启。</view>
+    <checkbox-group bindchange="onConsentChange"><label class="consent"><checkbox value="yes" checked="{{consent}}" color="#16845e"/><text>我同意担任转接人，了解文字和图片会经服务端转发；我可随时暂停。消息最长保留 31 天，过期后不可读取并由后台清理。</text></label></checkbox-group>
+    <button class="primary" loading="{{busy}}" disabled="{{!cloudReady || busy}}" bindtap="createChannel">创建转接并生成口令</button>
+    <view wx:if="{{createError}}" class="error-panel"><text class="error-title">创建失败详情</text><text class="error-detail">{{createError}}</text></view>
+  </view>
+
+  <view class="card" wx:if="{{ownerChannels.length || ownerChannelsError}}">
+    <view class="section-title"><text class="step">02</text><text>我的转接 · {{ownerChannels.length}} 条</text></view>
+    <view wx:if="{{ownerChannelsError}}" class="error-panel"><text class="error-title">列表暂不可用</text><text class="error-detail">{{ownerChannelsError}}</text></view>
+    <view class="channel-card" wx:for="{{ownerChannels}}" wx:key="channelId">
+      <view class="channel-heading">
+        <view><text class="channel-title">转接 · {{item.shortId}}</text><text class="channel-id">编号 {{item.channelId}}</text></view>
+        <text class="state-pill {{item.state}}">{{item.state === 'active' ? '转接中' : item.state === 'paused' ? '已暂停' : '等待加入'}}</text>
+      </view>
+      <view class="member-status"><text>发送方 <text class="member-state">{{item.joined.a ? '已加入' : '等待中'}}</text></text><text class="member-divider">·</text><text>接收方 <text class="member-state">{{item.joined.c ? '已加入' : '等待中'}}</text></text></view>
+      <view wx:if="{{item.inviteA || item.inviteC}}" class="invite-box">
+        <text class="invite-title">邀请口令 · 24 小时有效</text>
+        <button wx:if="{{item.inviteA}}" class="copy {{item.copiedSeat === 'a' ? 'is-copied' : ''}}" hover-class="copy-press" hover-stay-time="120" data-channel-id="{{item.channelId}}" data-seat="a" data-code="{{item.inviteA}}" bindtap="copyInvite">{{item.copiedSeat === 'a' ? '✓ 发送方口令已复制' : '复制发送方口令'}}</button>
+        <button wx:if="{{item.inviteC}}" class="copy {{item.copiedSeat === 'c' ? 'is-copied' : ''}}" hover-class="copy-press" hover-stay-time="120" data-channel-id="{{item.channelId}}" data-seat="c" data-code="{{item.inviteC}}" bindtap="copyInvite">{{item.copiedSeat === 'c' ? '✓ 接收方口令已复制' : '复制接收方口令'}}</button>
+        <view wx:if="{{copiedChannelId === item.channelId}}" class="copy-feedback">口令已复制，请私下发给对应参与者</view>
+      </view>
+      <button class="copy manage-button" loading="{{busyChannelId === item.channelId}}" disabled="{{busy}}" data-channel-id="{{item.channelId}}" bindtap="toggleOwnerChannel">{{item.state === 'active' ? '暂停这条转接' : '开启 / 恢复这条转接'}}</button>
+      <text class="tiny">转接人只管理本条转接开关，不读取会话正文。</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title"><text class="step">03</text><text>我是受邀方 · 加入转接</text></view>
+    <input class="invite-input" placeholder="粘贴转接人发来的邀请口令" value="{{inviteCode}}" bindinput="onInviteInput" maxlength="220" />
+    <view wx:if="{{joinError}}" class="error-panel"><text class="error-title">无法加入</text><text class="error-detail">{{joinError}}</text></view>
+    <checkbox-group bindchange="onJoinConsentChange"><label class="consent"><checkbox value="yes" color="#16845e"/><text>我知道发出的文字和图片会被转给指定对象，收到的回复也会转回给我；内容经 CloudBase 保存，最长保留 31 天。请勿发送敏感信息。</text></label></checkbox-group>
+    <button class="primary secondary" loading="{{busy}}" disabled="{{!cloudReady || busy}}" bindtap="joinChannel">确认并加入</button>
+  </view>
+
+  <view class="privacy"><text class="lock">▣</text><text>小程序不会读取微信聊天记录。文字在服务端加密保存；图片存放在云存储，服务端只向通道成员签发临时查看链接。选择照片前会请求隐私授权。转接人不能在会话页读取正文，请只邀请知情并同意的参与者。</text></view>
+  <button class="demo-link" bindtap="openDemo">先看本地交互演示</button>
+</view>

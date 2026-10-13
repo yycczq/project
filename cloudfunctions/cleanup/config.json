@@ -1,0 +1,5 @@
+{
+  "triggers": [
+    { "name": "hourly-expired-message-cleanup", "type": "timer", "config": "0 0 * * * * *" }
+  ]
+}

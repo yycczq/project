@@ -1,0 +1,12 @@
+{
+  "pages": ["pages/setup/setup", "pages/relay/relay"],
+  "window": {
+    "navigationBarTitleText": "接力",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f7f5",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
